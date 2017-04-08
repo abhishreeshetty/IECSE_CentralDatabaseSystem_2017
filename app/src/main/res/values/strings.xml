@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">IECSE Central Database System</string>
+    <string name="text_accounts">All Accounts</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_MemID">Membership ID</string>
+    <string name="hint_RegNo">Registration Number</string>
+    <string name="hint_PhoneNo">Phone Number</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_confirm_password">Confirm Password</string>
+    <string name="text_login">Login</string>
+    <string name="text_register">Register</string>
+    <string name="error_message_name">Enter Full Name</string>
+    <string name="error_message_email">Enter Valid Email</string>
+    <string name="error_message_memid">Enter Valid Membership ID</string>
+    <string name="error_message_regno">Enter Valid Registration No</string>
+    <string name="error_message_phoneno">Enter Valid Phone No</string>
+    <string name="error_message_age">Enter Age</string>
+    <string name="error_message_password">Enter Password</string>
+    <string name="success_message">Registration Successful</string>
+    <string name="text_not_member">No account yet? Create one</string>
+    <string name="text_already_member">Already a member? Login</string>
+    <string name="error_valid_memid_password">Wrong Membership ID or Password</string>
+    <string name="error_memid_exists">Membership ID Already Exists</string>
+    <string name="error_password_match">Password Does Not Matches</string>
+    <string name="action_settings">Settings</string>
+    <string name="text_hello">Hello,</string>
+    <string name="text_title">IECSE Central Database System</string>
+</resources>
