@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.androidtutorialshub.loginregister.model.Member;
+import com.androidtutorialshub.loginregister.model.NonMember;
 import com.androidtutorialshub.loginregister.model.User;
 
 import java.util.ArrayList;
@@ -44,35 +46,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_USER_EMAIL + " TEXT, " + COLUMN_USER_PASSWORD + " TEXT, "  + COLUMN_REG_NO + " TEXT, "
             + COLUMN_PHONE_NO + " TEXT" + ");";
 
-    private String CREATE_ATTENDANCE_TABLE="create table attendance(\n" +
-            "memID int,\n" +
-            "eventID int,\n" +
-            "nmID int,\n" +
-            "primary key(memID,eventID,nmID),\n" +
-            "foreign key eventID references event(eventID),\n" +
+    private String CREATE_ATTENDANCE_TABLE="create table attendance(" +
+            "memID int," +
+            "eventID int," +
+            "nmID int," +
+            "primary key(memID,eventID,nmID)," +
+            "foreign key eventID references event(eventID)," +
             "foreign key memID references member(memID));";
-    private String CREATE_EVENT_TABLE="create table event(\n" +
-            "eventID int auto increment primary key,\n" +
-            "name varchar(20) not null,\n" +
-            "venue varchar(20) not null,\n" +
+    private String CREATE_EVENT_TABLE="create table event(" +
+            "eventID int auto increment primary key," +
+            "name varchar(20) not null," +
+            "venue varchar(20) not null," +
             "type varchar(20) check (type in ('Dev','Web','Tech','Design','Others'));";
-    private String CREATE_MEMBER_TABLE="create table member(\n" +
-            "memID int auto increment primary key,\n" +
-            "name varchar(20) not null,\n" +
-            "email varchar(50) not null,\n" +
-            "mobile varchar(20) not null,\n" +
-            "access_level int check( access_level in (0,1,2,3));";
-    private String CREATE_NON_MEMBER_TABLE="create table non_member(\n" +
-            "nmID int primary key,\n" +
-            "name varchar(20) not null,\n" +
-            "email varchar(50) not null,\n" +
-            "mobile varchar(20) not null);";
-    private String CREATE_REGISTRATIONS_TABLE="create table registrations(\n" +
-            "eventID int,\n" +
-            "memID int,\n" +
-            "nmID int,\n" +
-            "foreign key eventID references event(eventID)\n" +
-            "foreign key memID references member(memID)\n" +
+    private String CREATE_MEMBER_TABLE="create table member(" +
+            "memID int auto increment primary key," +
+            "name text not null," +
+            "email text not null," +
+            "mobile text not null," +
+            "access_level int check( access_level in ('0','1','2','3'));";
+    private String CREATE_NON_MEMBER_TABLE="create table non_member(" +
+            "nmID int primary key," +
+            "name text not null," +
+            "email text not null," +
+            "mobile text not null);";
+    private String CREATE_REGISTRATIONS_TABLE="create table registrations(" +
+            "eventID int," +
+            "memID int," +
+            "nmID int," +
+            "foreign key eventID references event(eventID)" +
+            "foreign key memID references member(memID)" +
             "foreign key nmID references member(memID));";
 
 
@@ -317,7 +319,113 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return false;
     }
+
+    public List<Member> getAllMember() {
+        // array of columns to fetch
+        String[] columns = {
+                "memID",
+                "name",
+                "email",
+                "mobile",
+                "access_level"
+
+        };
+        // sorting orders
+        String sortOrder =
+                "memID" + " ASC";
+        List<Member> memberList = new ArrayList<Member>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // query the user table
+        /**
+         * Here query function is used to fetch records from user table this function works like we use sql query.
+         * SQL query equivalent to this query function is
+         * SELECT user_id,user_name,user_email,user_password FROM user ORDER BY user_name;
+         */
+        Cursor cursor = db.query("member", //Table to query
+                columns,    //columns to return
+                null,        //columns for the WHERE clause
+                null,        //The values for the WHERE clause
+                null,       //group the rows
+                null,       //filter by row groups
+                sortOrder); //The sort order
+
+
+        // Traversing through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Member member = new Member();
+                member.setMemId(Integer.parseInt(cursor.getString(cursor.getColumnIndex("memID"))));
+                member.setEmail(cursor.getString(cursor.getColumnIndex("email")));
+                member.setName(cursor.getString(cursor.getColumnIndex("name")));
+                member.setAccessLevel(cursor.getString(cursor.getColumnIndex("access_level")));
+                member.setPhoneNo(cursor.getString(cursor.getColumnIndex("mobile")));
+                // Adding user record to list
+                memberList.add(member);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+
+        // return user list
+        return memberList;
+    }
+
+
+    public List<NonMember> getAllNonMember() {
+        // array of columns to fetch
+        String[] columns = {
+                "nmID",
+                "name",
+                "email",
+                "mobile"
+
+        };
+        // sorting orders
+        String sortOrder =
+                "nmID" + " ASC";
+        List<NonMember> nonMemberList = new ArrayList<NonMember>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // query the user table
+        /**
+         * Here query function is used to fetch records from user table this function works like we use sql query.
+         * SQL query equivalent to this query function is
+         * SELECT user_id,user_name,user_email,user_password FROM user ORDER BY user_name;
+         */
+        Cursor cursor = db.query("non_member", //Table to query
+                columns,    //columns to return
+                null,        //columns for the WHERE clause
+                null,        //The values for the WHERE clause
+                null,       //group the rows
+                null,       //filter by row groups
+                sortOrder); //The sort order
+
+
+        // Traversing through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                NonMember nonMember = new NonMember();
+                nonMember.setNMId(Integer.parseInt(cursor.getString(cursor.getColumnIndex("nmID"))));
+                nonMember.setEmail(cursor.getString(cursor.getColumnIndex("email")));
+                nonMember.setName(cursor.getString(cursor.getColumnIndex("name")));
+                nonMember.setPhoneNo(cursor.getString(cursor.getColumnIndex("mobile")));
+                // Adding user record to list
+                nonMemberList.add(nonMember);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+
+        // return user list
+        return nonMemberList;
+    }
+
 }
+
+
 
 
 

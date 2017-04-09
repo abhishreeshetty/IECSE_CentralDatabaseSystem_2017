@@ -5,31 +5,7 @@
     android:orientation="vertical">
 
 
-        <Button
-            android:id="@+id/buttonMem"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="11dp"
-            android:layout_toEndOf="@+id/button2"
-            android:layout_toRightOf="@+id/button2"
-            android:text="Member"
-            android:onClick="goToMember"/>
 
-        <Button
-            android:id="@+id/buttonNonMem"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Non_Member"
-            android:onClick="goToNonMember" />
-
-        <Button
-            android:id="@+id/buttonEvent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Event"
-            android:onClick="goToEvent"
-            />
 
 
     <android.support.v7.widget.LinearLayoutCompat
@@ -42,7 +18,7 @@
         <android.support.v7.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/text_title"
+            android:text="Members List"
             android:textSize="20sp" />
 
         <android.support.v7.widget.AppCompatTextView
@@ -68,7 +44,7 @@
         android:textColor="@android:color/black" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerViewUsers"
+        android:id="@+id/recyclerViewMembers"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

@@ -13,7 +13,9 @@ import android.view.View;
 import android.widget.Button;
 
 import com.androidtutorialshub.loginregister.R;
+import com.androidtutorialshub.loginregister.adapters.MembersRecyclerAdapter;
 import com.androidtutorialshub.loginregister.adapters.UsersRecyclerAdapter;
+import com.androidtutorialshub.loginregister.model.Member;
 import com.androidtutorialshub.loginregister.model.User;
 import com.androidtutorialshub.loginregister.sql.DatabaseHelper;
 
@@ -24,90 +26,69 @@ import java.util.List;
  * Created by lalit on 10/10/2016.
  */
 
-public class UsersListActivity extends AppCompatActivity {
+public class ViewMember extends AppCompatActivity {
 
-    private AppCompatActivity activity = UsersListActivity.this;
+    private AppCompatActivity activity = ViewMember.this;
     private AppCompatTextView textViewName;
-    private RecyclerView recyclerViewUsers;
-    private List<User> listUsers;
-    private UsersRecyclerAdapter usersRecyclerAdapter;
+    private RecyclerView recyclerViewMembers;
+    private List<Member> listMembers;
+    private MembersRecyclerAdapter membersRecyclerAdapter;
     private DatabaseHelper databaseHelper;
 
 
-    Button memBtn;
-    Button nonMemBtn;
-    Button eventBtn;
+
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_users_list);
+        setContentView(R.layout.member_view);
         getSupportActionBar().setTitle("");
-        memBtn=(Button)findViewById(R.id.buttonMem);
-        nonMemBtn=(Button)findViewById(R.id.buttonNonMem);
-        eventBtn=(Button)findViewById(R.id.buttonEvent);
+
         initViews();
         initObjects();
 
     }
 
-    public void goToMember(View v)
-    {
-        Intent intentGoToMember = new Intent(getApplicationContext(), FillMember.class);
-        startActivity(intentGoToMember);
-    }
-
-    public void goToNonMember(View v)
-    {
-        Intent intentGoToNonMember = new Intent(getApplicationContext(), FillNonMember.class);
-        startActivity(intentGoToNonMember);
-    }
-
-    public void goToEvent(View v)
-    {
-        Intent intentGoToEvent = new Intent(getApplicationContext(), FillEvent.class);
-        startActivity(intentGoToEvent);
-    }
 
     /**
      * This method is to initialize views
      */
     private void initViews() {
         textViewName = (AppCompatTextView) findViewById(R.id.textViewName);
-        recyclerViewUsers = (RecyclerView) findViewById(R.id.recyclerViewUsers);
+        recyclerViewMembers = (RecyclerView) findViewById(R.id.recyclerViewMembers);
     }
 
     /**
      * This method is to initialize objects to be used
      */
     private void initObjects() {
-        listUsers = new ArrayList<>();
-        usersRecyclerAdapter = new UsersRecyclerAdapter(listUsers);
+        listMembers = new ArrayList<>();
+        membersRecyclerAdapter = new MembersRecyclerAdapter(listMembers);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerViewUsers.setLayoutManager(mLayoutManager);
-        recyclerViewUsers.setItemAnimator(new DefaultItemAnimator());
-        recyclerViewUsers.setHasFixedSize(true);
-        recyclerViewUsers.setAdapter(usersRecyclerAdapter);
+        recyclerViewMembers.setLayoutManager(mLayoutManager);
+        recyclerViewMembers.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewMembers.setHasFixedSize(true);
+        recyclerViewMembers.setAdapter(membersRecyclerAdapter);
         databaseHelper = new DatabaseHelper(activity);
 
-        String emailFromIntent = getIntent().getStringExtra("EMAIL");
-        textViewName.setText(emailFromIntent);
+        //String emailFromIntent = getIntent().getStringExtra("EMAIL");
+        //textViewName.setText(emailFromIntent);
 
         getDataFromSQLite();
     }
 
     /**
-     * This method is to fetch all user records from SQLite
+     * This method is to fetch all member records from SQLite
      */
     private void getDataFromSQLite() {
         // AsyncTask is used that SQLite operation not blocks the UI Thread.
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
-                listUsers.clear();
-                listUsers.addAll(databaseHelper.getAllUser());
+                listMembers.clear();
+                listMembers.addAll(databaseHelper.getAllMember());
 
                 return null;
             }
@@ -115,7 +96,7 @@ public class UsersListActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                usersRecyclerAdapter.notifyDataSetChanged();
+                membersRecyclerAdapter.notifyDataSetChanged();
             }
         }.execute();
     }
