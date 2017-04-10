@@ -6,8 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.androidtutorialshub.loginregister.model.Attendance;
+import com.androidtutorialshub.loginregister.model.Event;
 import com.androidtutorialshub.loginregister.model.Member;
 import com.androidtutorialshub.loginregister.model.NonMember;
+import com.androidtutorialshub.loginregister.model.Registration;
 import com.androidtutorialshub.loginregister.model.User;
 
 import java.util.ArrayList;
@@ -444,4 +447,151 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // return user list
         return nonMemberList;
     }
+
+    public List<Event> getAllEvent() {
+        // array of columns to fetch
+        String[] columns = {
+                "eventID",
+                "name",
+                "venue",
+                "type"
+
+        };
+        // sorting orders
+        String sortOrder =
+                "type" + " ASC";
+        List<Event> eventList = new ArrayList<Event>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // query the user table
+        /**
+         * Here query function is used to fetch records from user table this function works like we use sql query.
+         * SQL query equivalent to this query function is
+         * SELECT user_id,user_name,user_email,user_password FROM user ORDER BY user_name;
+         */
+        Cursor cursor = db.query("event", //Table to query
+                columns,    //columns to return
+                null,        //columns for the WHERE clause
+                null,        //The values for the WHERE clause
+                null,       //group the rows
+                null,       //filter by row groups
+                sortOrder); //The sort order
+
+
+        // Traversing through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Event event = new Event();
+                event.setEventID(cursor.getInt(cursor.getColumnIndex("eventID")));
+                event.setName(cursor.getString(cursor.getColumnIndex("name")));
+                event.setVenue(cursor.getString(cursor.getColumnIndex("venue")));
+                event.setType(cursor.getString(cursor.getColumnIndex("type")));
+                // Adding user record to list
+                eventList.add(event);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+
+        // return user list
+        return eventList;
+    }
+
+
+    public List<Attendance> getAllAttendance() {
+        // array of columns to fetch
+        String[] columns = {
+                "memID",
+                "NMID",
+                "eventID"
+
+        };
+        // sorting orders
+        String sortOrder =
+                "eventID" + " ASC";
+        List<Attendance> attendanceList = new ArrayList<Attendance>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // query the user table
+        /**
+         * Here query function is used to fetch records from user table this function works like we use sql query.
+         * SQL query equivalent to this query function is
+         * SELECT user_id,user_name,user_email,user_password FROM user ORDER BY user_name;
+         */
+        Cursor cursor = db.query("attendance", //Table to query
+                columns,    //columns to return
+                null,        //columns for the WHERE clause
+                null,        //The values for the WHERE clause
+                null,       //group the rows
+                null,       //filter by row groups
+                sortOrder); //The sort order
+
+
+        // Traversing through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Attendance attendance = new Attendance();
+                attendance.setMemID(Integer.parseInt(cursor.getString(cursor.getColumnIndex("memID"))));
+                attendance.setNmID(Integer.parseInt(cursor.getString(cursor.getColumnIndex("NMID"))));
+                attendance.setEventID(Integer.parseInt(cursor.getString(cursor.getColumnIndex("eventID"))));
+                attendanceList.add(attendance);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+
+        // return user list
+        return attendanceList;
+    }
+
+    public List<Registration> getAllRegistration() {
+        // array of columns to fetch
+        String[] columns = {
+                "memID",
+                "NMID",
+                "eventID"
+
+        };
+        // sorting orders
+        String sortOrder =
+                "eventID" + " ASC";
+        List<Registration> registrationList = new ArrayList<Registration>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // query the user table
+        /**
+         * Here query function is used to fetch records from user table this function works like we use sql query.
+         * SQL query equivalent to this query function is
+         * SELECT user_id,user_name,user_email,user_password FROM user ORDER BY user_name;
+         */
+        Cursor cursor = db.query("registration", //Table to query
+                columns,    //columns to return
+                null,        //columns for the WHERE clause
+                null,        //The values for the WHERE clause
+                null,       //group the rows
+                null,       //filter by row groups
+                sortOrder); //The sort order
+
+
+        // Traversing through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Registration registration = new Registration();
+                registration.setMemID(Integer.parseInt(cursor.getString(cursor.getColumnIndex("memID"))));
+                registration.setNmID(Integer.parseInt(cursor.getString(cursor.getColumnIndex("NMID"))));
+                registration.setEventID(Integer.parseInt(cursor.getString(cursor.getColumnIndex("eventID"))));
+                registrationList.add(registration);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+
+        // return user list
+        return registrationList;
+    }
+
+
 }

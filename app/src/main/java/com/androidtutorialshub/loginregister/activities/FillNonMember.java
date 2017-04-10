@@ -126,10 +126,10 @@ public class FillNonMember extends AppCompatActivity implements View.OnClickList
 
 
 
-        databaseHelper.getWritableDatabase().execSQL("insert into non_member values ("+
-                textInputEditTextName1.getText().toString().trim()+","+
-                textInputEditTextEmail1.getText().toString().trim()+","+
-                textInputEditTextPhoneNo1.getText().toString().trim()+");");
+        databaseHelper.getWritableDatabase().execSQL("insert into non_member (name,email,mobile) values ('"+
+                textInputEditTextName1.getText().toString().trim()+"','"+
+                textInputEditTextEmail1.getText().toString().trim()+"','"+
+                textInputEditTextPhoneNo1.getText().toString().trim()+"');");
 
         // Snack Bar to show success message that record saved successfully
         Snackbar.make(nestedScrollView, getString(R.string.success_message), Snackbar.LENGTH_LONG).show();

@@ -27,10 +27,19 @@
             android:name=".activities.FillEvent"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".activities.ViewEvent"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activities.FillAttendance"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".activities.ViewAttendance"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activities.FillRegistration"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.ViewRegistration"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.FillMember"
