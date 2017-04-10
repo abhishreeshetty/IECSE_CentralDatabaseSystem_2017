@@ -38,7 +38,6 @@ public class UsersListActivity extends AppCompatActivity {
     Button nonMemBtn;
     Button eventBtn;
     Button attenBtn;
-    Button userBtn;
     Button regBtn;
 
 
@@ -51,6 +50,8 @@ public class UsersListActivity extends AppCompatActivity {
         memBtn=(Button)findViewById(R.id.buttonMem);
         nonMemBtn=(Button)findViewById(R.id.buttonNonMem);
         eventBtn=(Button)findViewById(R.id.buttonEvent);
+        attenBtn=(Button)findViewById(R.id.buttonAtten);
+        regBtn=(Button)findViewById(R.id.buttonReg);
         initViews();
         initObjects();
 
@@ -73,6 +74,20 @@ public class UsersListActivity extends AppCompatActivity {
         Intent intentGoToEvent = new Intent(getApplicationContext(), FillEvent.class);
         startActivity(intentGoToEvent);
     }
+
+    public void goToRegistration(View v)
+    {
+        Intent intentGoToEvent = new Intent(getApplicationContext(), FillRegistration.class);
+        startActivity(intentGoToEvent);
+    }
+
+    public void goToAttendance(View v)
+    {
+        Intent intentGoToEvent = new Intent(getApplicationContext(), FillAttendance.class);
+        startActivity(intentGoToEvent);
+    }
+
+
 
     /**
      * This method is to initialize views
