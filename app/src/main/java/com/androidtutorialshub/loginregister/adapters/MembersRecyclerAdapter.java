@@ -41,6 +41,7 @@ public class MembersRecyclerAdapter extends RecyclerView.Adapter<MembersRecycler
         holder.textViewMemID.setText(listMembers.get(position).getMemId());
         holder.textViewAccessLevel.setText(listMembers.get(position).getAccessLevel());
         holder.textViewPhone.setText(listMembers.get(position).getPhoneNo());
+        holder.textViewDept.setText(listMembers.get(position).getDept());
     }
 
     @Override
@@ -60,6 +61,7 @@ public class MembersRecyclerAdapter extends RecyclerView.Adapter<MembersRecycler
         public AppCompatTextView textViewEmail;
         public AppCompatTextView textViewPhone;
         public AppCompatTextView textViewAccessLevel;
+        public AppCompatTextView textViewDept;
 
 
 
@@ -71,6 +73,7 @@ public class MembersRecyclerAdapter extends RecyclerView.Adapter<MembersRecycler
             textViewEmail = (AppCompatTextView) view.findViewById(R.id.textViewEmail2);
             textViewPhone = (AppCompatTextView) view.findViewById(R.id.textViewMobile2);
             textViewAccessLevel = (AppCompatTextView) view.findViewById(R.id.textViewAccessLevel2);
+            textViewDept = (AppCompatTextView) view.findViewById(R.id.textViewDept2);
         }
     }
 

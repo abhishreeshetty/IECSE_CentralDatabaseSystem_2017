@@ -37,6 +37,10 @@ public class UsersListActivity extends AppCompatActivity {
     Button memBtn;
     Button nonMemBtn;
     Button eventBtn;
+    Button attenBtn;
+    Button userBtn;
+    Button regBtn;
+
 
 
     @Override

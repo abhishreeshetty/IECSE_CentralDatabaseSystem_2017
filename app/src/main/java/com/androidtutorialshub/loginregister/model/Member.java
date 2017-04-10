@@ -11,6 +11,8 @@ public class Member {
     private String email;
     private String accessLevel;
     private String phoneNo;
+    private String dept;
+
 
 
     public int getMemId() {
@@ -35,6 +37,14 @@ public class Member {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getDept() {
+        return dept;
+    }
+
+    public void setDept(String dept) {
+        this.dept = dept;
     }
 
 

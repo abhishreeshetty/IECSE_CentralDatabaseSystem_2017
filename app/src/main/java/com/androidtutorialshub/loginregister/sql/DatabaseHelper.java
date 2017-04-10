@@ -30,7 +30,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_MEMBER = "member";
     private static final String TABLE_ATTENDANCE = "attendance";
     private static final String TABLE_NON_MEMBER = "non_member";
-    private static final String TABLE_REGISTRATIONS = "registrations";
+    private static final String TABLE_REGISTRATION = "registration";
 
     // User Table Columns names
     private static final String COLUMN_USER_ID = "member_id";
@@ -40,42 +40,56 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_REG_NO="registration_number";
     private static final String COLUMN_PHONE_NO="phone_number";
 
+
+    private static final String COLUMN_MEM_ID = "memID";
+    private static final String COLUMN_MEM_NAME = "name";
+    private static final String COLUMN_MEM_EMAIL = "email";
+    private static final String COLUMN_MEM_PHONE = "mobile";
+    private static final String COLUMN_MEM_DEPT = "dept";
+    private static final String COLUMN_MEM_AL="access_level";
+
+    private static final String COLUMN_E_ID = "eventID";
+    private static final String COLUMN_E_NAME = "name";
+    private static final String COLUMN_E_VENUE = "venue";
+    private static final String COLUMN_E_TYPE = "type";
+
+
+    private static final String COLUMN_NM_ID = "NMID";
+
     // create table sql query
     private String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER + "( "
             + COLUMN_USER_ID + " INT PRIMARY KEY, " + COLUMN_USER_NAME + " TEXT, "
             + COLUMN_USER_EMAIL + " TEXT, " + COLUMN_USER_PASSWORD + " TEXT, "  + COLUMN_REG_NO + " TEXT, "
             + COLUMN_PHONE_NO + " TEXT" + ");";
 
-    private String CREATE_ATTENDANCE_TABLE="create table attendance(" +
-            "memID int," +
-            "eventID int," +
-            "nmID int," +
-            "primary key(memID,eventID,nmID)," +
-            "foreign key eventID references event(eventID)," +
-            "foreign key memID references member(memID));";
-    private String CREATE_EVENT_TABLE="create table event(" +
-            "eventID int auto increment primary key," +
-            "name varchar(20) not null," +
-            "venue varchar(20) not null," +
-            "type varchar(20) check (type in ('Dev','Web','Tech','Design','Others'));";
-    private String CREATE_MEMBER_TABLE="create table member(" +
-            "memID int auto increment primary key," +
-            "name text not null," +
-            "email text not null," +
-            "mobile text not null," +
-            "access_level int check( access_level in ('0','1','2','3'));";
-    private String CREATE_NON_MEMBER_TABLE="create table non_member(" +
-            "nmID int primary key," +
-            "name text not null," +
-            "email text not null," +
-            "mobile text not null);";
-    private String CREATE_REGISTRATIONS_TABLE="create table registrations(" +
-            "eventID int," +
-            "memID int," +
-            "nmID int," +
-            "foreign key eventID references event(eventID)" +
-            "foreign key memID references member(memID)" +
-            "foreign key nmID references member(memID));";
+    private String CREATE_MEMBER_TABLE="CREATE TABLE " + TABLE_MEMBER + "(" +
+            COLUMN_MEM_ID + " INT AUTO INCREMENT PRIMARY KEY, " + COLUMN_MEM_NAME + " TEXT, "
+            + COLUMN_MEM_EMAIL + " TEXT, " + COLUMN_MEM_PHONE + " TEXT, "  + COLUMN_MEM_DEPT + " TEXT, "
+            + COLUMN_MEM_AL + " TEXT" + ");";
+
+    private String CREATE_NON_MEMBER_TABLE="CREATE TABLE " + TABLE_NON_MEMBER + "(" +
+            COLUMN_NM_ID + " INT AUTO INCREMENT PRIMARY KEY, " + COLUMN_MEM_NAME + " TEXT, "
+            + COLUMN_MEM_EMAIL + " TEXT, " + COLUMN_MEM_PHONE + " TEXT "  + ");";
+
+
+
+    private String CREATE_EVENT_TABLE="CREATE TABLE " + TABLE_EVENT + "(" +
+            COLUMN_E_ID + " INT AUTO INCREMENT PRIMARY KEY, " + COLUMN_E_NAME + " TEXT, "
+            + COLUMN_E_VENUE + " TEXT, " + COLUMN_E_TYPE + " TEXT check("+ COLUMN_E_TYPE+ " in ('Dev','Web','Tech','Design','Others')));";
+
+    private String CREATE_ATTENDANCE_TABLE="CREATE TABLE " + TABLE_ATTENDANCE + "(" +
+            COLUMN_MEM_ID + " INT ," + COLUMN_NM_ID + " INT, "
+            + COLUMN_E_ID + " INT, " + "primary key(memID,eventID,nmID),"+
+    "foreign key(eventID) references event(eventID),"+
+            "foreign key(NMID) references non_member(NMID),"+
+    "foreign key(memID) references member(memID)" + ");";
+
+    private String CREATE_REGISTRATION_TABLE="CREATE TABLE " + TABLE_REGISTRATION + "(" +
+            COLUMN_MEM_ID + " INT ," + COLUMN_NM_ID + " INT, "
+            + COLUMN_E_ID + " INT, " + "primary key(memID,eventID,nmID),"+
+            "foreign key(eventID) references event(eventID),"+
+            "foreign key(NMID) references non_member(NMID),"+
+            "foreign key(memID) references member(memID)" + ");";
 
 
 
@@ -83,6 +97,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // drop table sql query
     private String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_USER+";";
+    private String DROP_MEMBER_TABLE = "DROP TABLE IF EXISTS " + TABLE_MEMBER+";";
+    private String DROP_NON_MEMBER_TABLE = "DROP TABLE IF EXISTS " + TABLE_NON_MEMBER+";";
+    private String DROP_EVENT_TABLE = "DROP TABLE IF EXISTS " + TABLE_EVENT+";";
+    private String DROP_ATTENDANCE_TABLE = "DROP TABLE IF EXISTS " + TABLE_ATTENDANCE+";";
+    private String DROP_REGISTRATION_TABLE = "DROP TABLE IF EXISTS " + TABLE_REGISTRATION+";";
 
     /**
      * Constructor
@@ -95,13 +114,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
         db.execSQL(CREATE_USER_TABLE);
         db.execSQL(CREATE_MEMBER_TABLE);
         db.execSQL(CREATE_NON_MEMBER_TABLE);
-        db.execSQL(CREATE_ATTENDANCE_TABLE);
         db.execSQL(CREATE_EVENT_TABLE);
-        db.execSQL(CREATE_REGISTRATIONS_TABLE);
+        db.execSQL(CREATE_ATTENDANCE_TABLE);
+        db.execSQL(CREATE_REGISTRATION_TABLE);
 
     }
 
@@ -111,6 +129,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         //Drop User Table if exist
         db.execSQL(DROP_USER_TABLE);
+
 
         // Create tables again
         onCreate(db);
@@ -311,11 +330,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null);                      //The sort order
 
         int cursorCount = cursor.getCount();
+
+        cursor.close();
+        db.close();
         if (cursorCount > 0) {
             return true;
         }
-        cursor.close();
-        db.close();
 
         return false;
     }
@@ -327,6 +347,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "name",
                 "email",
                 "mobile",
+                "dept",
                 "access_level"
 
         };
@@ -360,6 +381,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 member.setEmail(cursor.getString(cursor.getColumnIndex("email")));
                 member.setName(cursor.getString(cursor.getColumnIndex("name")));
                 member.setAccessLevel(cursor.getString(cursor.getColumnIndex("access_level")));
+                member.setDept(cursor.getString(cursor.getColumnIndex("dept")));
                 member.setPhoneNo(cursor.getString(cursor.getColumnIndex("mobile")));
                 // Adding user record to list
                 memberList.add(member);
@@ -422,13 +444,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // return user list
         return nonMemberList;
     }
-
 }
-
-
-
-
-
-
-
-
